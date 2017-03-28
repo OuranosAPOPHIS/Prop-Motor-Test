@@ -250,8 +250,12 @@ int main(void) {
 		// First check for commands from Console.
 		if (g_ConsoleFlag)
 			Menu(g_CharConsole);
-
 	}
+
+	//
+	// Kill the motor.
+	Menu('x');
+
 	//
 	// Program ending. Do any clean up that's needed.
 	UARTprintf("Goodbye!\r\n");
