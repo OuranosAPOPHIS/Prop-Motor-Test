@@ -1,11 +1,11 @@
 /*
  * Project: Aerial Platform for Overland Haul and Import System (APOPHIS)
  *
- *  Created On: Jan 20, 2017
- *  Last Updated: March 7, 2017
+ *  Created On: Mar 28, 2017
+ *  Last Updated:
  *      Author(s): Brandon Klefman
  *
- *      Purpose: Flight computer for the APOPHIS platform.
+ *      Purpose: Software for testing the Propulsion subsystem max thrust.
  *
  */
 
@@ -45,20 +45,6 @@
 //
 //*****************************************************************************
 
-#define DEBUG false
-#define APOPHIS false
-
-#define CONSOLE_ACTIVATED true
-#define RADIO_ACTIVATED true
-#define GPS_ACTIVATED false
-#define GNDMTRS_ACTIVATED true
-#define SECONDARY_ATTITUDE false
-#define ULTRASONIC_ACTIVATED false
-#define SOLENOIDS_ACTIVATED false
-#define IMU_ACTIVATED true
-#define ALTIMETER_ACTIVATED false
-#define AIRMTRS_ACTIVATED true
-
 #define SPEEDIS120MHZ true
 
 //*****************************************************************************
@@ -68,35 +54,10 @@
 //*****************************************************************************
 void SysTickIntHandler(void);
 void ConsoleIntHandler(void);
-void RadioIntHandler(void);
-void GPSIntHandler(void);
-void Timer2AInterrupt(void);
-void Timer2BInterrupt(void);
-void Timer3AInterrupt(void);
-void Timer3BInterrupt(void);
-void Timer1AInterrupt(void);
-void Timer1BInterrupt(void);
-void SolenoidInterrupt(void);
-void BMI160IntHandler(void);
-void BME280IntHandler(void);
-void RadioTimeoutIntHandler(void);
 void TurnOnLED(uint32_t LEDNum);
 void TurnOffLED(uint32_t LEDNum);
 void Menu(char CharReceived);
-void ProcessGPS(void);
-void ProcessRadio(void);
-void ProcessADC(void);
-int ProcessUltraSonic(uint32_t SysClockSpeed);
-void ActivateSolenoids(void);
-void DeactivateSolenoids(void);
-void SendPacket(void);
-void ProcessIMUData(void);
-void ProcessBME280(void);
 void WaitForButtonPress(uint8_t ButtonState);
-void ManualDriveUpdate(void);
-void ManualFlyUpdate(void);
-void AutoFlyUpdate(void);
-void AutoDriveUpdate(void);
 
 //*****************************************************************************
 //
