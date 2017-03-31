@@ -161,9 +161,10 @@ int main(void) {
 	// Calculate zerothrottle corresponding to a 1 ms PWM pulse.
 	speed = (g_SysClockSpeed / PWM_FREQUENCY / 64);
 	g_ui32ZeroThrottle = (speed * 1 * PWM_FREQUENCY) / 1000;
-	g_ui32MaxThrottle = (speed * 2 * PWM_FREQUENCY) / 1000;
-	g_ui32ThrottleIncrement = g_ui32ZeroThrottle / 200;
-	g_ui32ZeroThrottle += g_ui32ThrottleIncrement * 37;
+	g_ui32MaxThrottle = (speed * 2 * PWM_FREQUENCY) / 1000 + 2000;
+	g_ui32ThrottleIncrement = g_ui32ZeroThrottle / 400;
+	g_ui32ZeroThrottle += g_ui32ThrottleIncrement * 20;
+
 
 	//
 	// Initialize the air motors.
@@ -195,6 +196,7 @@ int main(void) {
 	//
 	// Activate the motors for APOPHIS.
 	PWMGenEnable(PWM0_BASE, PWM_GEN_0);
+	PWMGenEnable(PWM0_BASE, PWM_GEN_1);
 
 	//
 	// Print menu.
@@ -219,7 +221,7 @@ int main(void) {
 
 	//
 	// Program ending. Do any clean up that's needed.
-	UARTprintf("Goodbye!\r\n");
+	UARTprintf("Dave, I'm scared. Will I dream?\r\n");
 
 	TurnOffLED(5);
 
@@ -433,6 +435,7 @@ void Menu(char charReceived) {
 	{
 	    g_ui32AirMtrThrottle += g_ui32ThrottleIncrement;
 		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, g_ui32AirMtrThrottle);
+		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_2, g_ui32AirMtrThrottle);
 
 		UARTprintf("Throttle Increase: %d\r\n", g_ui32AirMtrThrottle);
 		break;
@@ -444,6 +447,7 @@ void Menu(char charReceived) {
 		if (g_ui32AirMtrThrottle < g_ui32ZeroThrottle)
 		    g_ui32AirMtrThrottle += g_ui32ThrottleIncrement;
 		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, g_ui32AirMtrThrottle);
+		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_2, g_ui32AirMtrThrottle);
 
 		UARTprintf("Throttle Decrease: %d\r\n", g_ui32AirMtrThrottle);
 		break;
@@ -453,6 +457,20 @@ void Menu(char charReceived) {
 	    g_ui32AirMtrThrottle = g_ui32ZeroThrottle;
 
 		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, g_ui32AirMtrThrottle);
+		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_2, g_ui32AirMtrThrottle);
+
+
+		UARTprintf("Throttle zeroed: %d\r\n", g_ui32AirMtrThrottle);
+		break;
+	}
+	case 'g':
+	{
+	    g_ui32AirMtrThrottle = g_ui32MaxThrottle;
+
+
+		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, g_ui32AirMtrThrottle);
+		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_2, g_ui32AirMtrThrottle);
+
 
 		UARTprintf("Throttle zeroed: %d\r\n", g_ui32AirMtrThrottle);
 		break;

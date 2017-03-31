@@ -57,6 +57,7 @@ extern uint32_t __STACK_TOP;
 // To be added by user
 extern void TurnOnLED(int numLED);
 extern void TurnOffLED(int numLED);
+extern void Menu(char charReceived);
 
 //*****************************************************************************
 //
@@ -253,6 +254,11 @@ FaultISR(void)
     //
     // Enter an infinite loop.
     //
+
+	//
+	// Kill the motor.
+	Menu('x');
+
     while(1)
     {
         int i = 0;

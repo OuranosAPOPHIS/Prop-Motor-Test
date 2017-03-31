@@ -151,18 +151,6 @@ void InitAirMtrs(uint32_t sysClockSpeed, uint32_t zeroThrottle) {
 	GPIOPinTypePWM(PWM_GPIO_PORT1, PWM_MTR_1 | PWM_MTR_2 | PWM_MTR_3);
 	GPIOPinTypePWM(PWM_GPIO_PORT2, PWM_MTR_4);
 
-#if !APOPHIS
-	//
-	// Set up 2 extra motors.
-	SysCtlPeripheralEnable(GPIO_PORTK_BASE);
-
-	GPIOPinConfigure(GPIO_PG1_M0PWM5);
-	GPIOPinConfigure(GPIO_PK4_M0PWM6);
-
-	GPIOPinTypePWM(GPIO_PORTG_BASE, PWM_MTR_5);
-	GPIOPinTypePWM(GPIO_PORTK_BASE, PWM_MTR_6);
-#endif
-
 	PWMClockSet(PWM0_BASE, PWM_SYSCLK_DIV_64);
 
 	//
@@ -183,13 +171,6 @@ void InitAirMtrs(uint32_t sysClockSpeed, uint32_t zeroThrottle) {
 
 	UARTprintf("PWM generator period: %d\r\n", stuff);
 
-#if !APOPHIS
-	//
-	// Set up the generator for the 6th motor.
-	PWMGenConfigure(PWM0_BASE, PWM_GEN_3, PWM_GEN_MODE_DOWN);
-	PWMGenPeriodSet(PWM0_BASE, PWM_GEN_3, speed);
-#endif
-
 	//
 	// Initialize pulse to 5%
 	PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, zeroThrottle);
@@ -197,22 +178,11 @@ void InitAirMtrs(uint32_t sysClockSpeed, uint32_t zeroThrottle) {
 	PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_3, zeroThrottle);
 	PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_4, zeroThrottle);
 
-#if !APOPHIS
-	PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_5, zeroThrottle);
-	PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_6, zeroThrottle);
-
-	PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT | PWM_OUT_2_BIT | PWM_OUT_3_BIT |
-	PWM_OUT_4_BIT | PWM_OUT_5_BIT | PWM_OUT_6_BIT, true);
-
-	UARTprintf("Motors initialized for test rig.\r\nDone!\n\r");
-#else
-
 	//
 	// Set the output PWM modules.
 	PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT | PWM_OUT_2_BIT | PWM_OUT_3_BIT |
 			PWM_OUT_4_BIT, true);
 
 	UARTprintf("Motors initialized for APOPHIS.\r\nDone!\n\r");
-#endif
 }
 
