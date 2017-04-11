@@ -161,10 +161,9 @@ int main(void) {
 	// Calculate zerothrottle corresponding to a 1 ms PWM pulse.
 	speed = (g_SysClockSpeed / PWM_FREQUENCY / 64);
 	g_ui32ZeroThrottle = (speed * 1 * PWM_FREQUENCY) / 1000;
-	g_ui32MaxThrottle = (speed * 2 * PWM_FREQUENCY) / 1000 + 2000;
+	g_ui32MaxThrottle = (speed * 2 * PWM_FREQUENCY) / 1000;
 	g_ui32ThrottleIncrement = g_ui32ZeroThrottle / 400;
-	g_ui32ZeroThrottle += g_ui32ThrottleIncrement * 20;
-
+	g_ui32ZeroThrottle = 2020;
 
 	//
 	// Initialize the air motors.
@@ -428,7 +427,6 @@ void Menu(char charReceived) {
 		UARTprintf("w - Increase motor throttle.\r\n");
 		UARTprintf("s - Decrease motor throttle.\r\n");
         UARTprintf("x - Stop the motors.\r\n");
-		UARTprintf("0 - Cut ground motor throttle.\r\n");
 		break;
 	}
 	case 'w': // Increase throttle of air motors.
@@ -455,18 +453,6 @@ void Menu(char charReceived) {
 	case 'x': // kill the throttle.
 	{
 	    g_ui32AirMtrThrottle = g_ui32ZeroThrottle;
-
-		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, g_ui32AirMtrThrottle);
-		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_2, g_ui32AirMtrThrottle);
-
-
-		UARTprintf("Throttle zeroed: %d\r\n", g_ui32AirMtrThrottle);
-		break;
-	}
-	case 'g':
-	{
-	    g_ui32AirMtrThrottle = g_ui32MaxThrottle;
-
 
 		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_1, g_ui32AirMtrThrottle);
 		PWMPulseWidthSet(PWM0_BASE, MOTOR_OUT_2, g_ui32AirMtrThrottle);
